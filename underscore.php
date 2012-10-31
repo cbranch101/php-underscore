@@ -62,11 +62,13 @@ class __ {
     $collection = (array) self::_collection($collection);
     if(count($collection) === 0) self::_wrap(array());
     
-    $return = array();
-    foreach($collection as $k=>$v) {
-      $return[] = call_user_func($iterator, $v, $k, $collection);
-    }
-    return self::_wrap($return);
+	$return = array();
+	$i = 0;
+	foreach($collection as $key => $item) {
+		$return[$key] = call_user_func($iterator, $item, $key, $i++);  
+	}
+
+	return self::_wrap($return);
   }
   
   
@@ -501,7 +503,7 @@ class __ {
     arsort($results);
     $__ = new self;
     $first_key = $__->first(array_keys($results));
-    return $collection[$first_key];
+    return self::_wrap($collection[$first_key]);
   }
   
   
@@ -534,7 +536,7 @@ class __ {
     foreach($results as $k=>$v) {
       $results[$k] = $collection[$k];
     }
-    return self::_wrap(array_values($results));
+    return self::_wrap($results);
   }
   
   
@@ -549,7 +551,7 @@ class __ {
       if(!array_key_exists($key, $result)) $result[$key] = array();
       $result[$key][] = $v;
     }
-    return $result;
+    return self::_wrap($result);
   }
   
   
